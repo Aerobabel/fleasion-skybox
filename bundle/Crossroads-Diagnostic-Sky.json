@@ -1,0 +1,58 @@
+{
+  "replacement_rules": [
+    {
+      "name": "Crossroads SkyboxBk",
+      "replace_ids": [
+        1013852
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Bk.png",
+      "enabled": true
+    },
+    {
+      "name": "Crossroads SkyboxDn",
+      "replace_ids": [
+        1013853
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Dn.png",
+      "enabled": true
+    },
+    {
+      "name": "Crossroads SkyboxLf",
+      "replace_ids": [
+        1013851
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Lf.png",
+      "enabled": true
+    },
+    {
+      "name": "Crossroads SkyboxRt",
+      "replace_ids": [
+        1013849
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Rt.png",
+      "enabled": true
+    },
+    {
+      "name": "Crossroads SkyboxFt",
+      "replace_ids": [
+        1013850
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Ft.png",
+      "enabled": true
+    },
+    {
+      "name": "Crossroads SkyboxUp",
+      "replace_ids": [
+        1013854
+      ],
+      "mode": "local",
+      "local_path": "/Crossroads-Diagnostic-Sky/Up.png",
+      "enabled": true
+    }
+  ]
+}
