@@ -15,6 +15,26 @@ class SkyboxTests(unittest.TestCase):
     def test_checked_out_bundle_verifies(self):
         self.assertEqual(len(skybox.verify(skybox.ROOT / 'bundle')), 6)
 
+    def test_existing_local_install_can_be_verified_and_removed(self):
+        skybox.install(self.home)
+        folder = self.home / 'configs'
+        (folder / f'{skybox.NAME}.json').write_text(json.dumps(skybox.profile('local')))
+        self.settings['enabled_configs'].append(skybox.NAME)
+        (self.home / 'settings.json').write_text(json.dumps(self.settings))
+        self.assertEqual(len(skybox.check_installed(self.home)), 6)
+        with self.assertRaises(ValueError):
+            skybox.verify(folder)
+        skybox.uninstall(self.home)
+        self.assertFalse((folder / f'{skybox.NAME}.json').exists())
+
+    def test_changed_legacy_local_rule_is_rejected(self):
+        skybox.install(self.home)
+        legacy = skybox.profile('local')
+        legacy['replacement_rules'][0]['local_path'] = '/unrelated.png'
+        (self.home / 'configs' / f'{skybox.NAME}.json').write_text(json.dumps(legacy))
+        with self.assertRaises(ValueError):
+            skybox.verify(self.home / 'configs', allow_legacy_local=True)
+
     def test_verify_accepts_crlf_profile_but_rejects_changed_rule(self):
         folder = self.home / 'configs'
         skybox.build(folder)

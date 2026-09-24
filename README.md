@@ -2,11 +2,13 @@
 
 ![Front skybox face: a golden smiley sun above MIRA in a twilight sky](bundle/Crossroads-Mira-Sky/Ft.png)
 
-A six-face skybox for [Roblox Crossroads](https://www.roblox.com/games/1818/Crossroads), installed locally with [Fleasion](https://github.com/fleasion/Fleasion). A twilight cloud panorama wraps around the player; a smiling golden sun and the exact word **MIRA** appear on the front face. The six 512-pixel PNGs are included. Python's standard library is enough to install and verify them.
+A six-face skybox for [Roblox Crossroads](https://www.roblox.com/games/1818/Crossroads), loaded through [Fleasion](https://github.com/fleasion/Fleasion). A twilight cloud panorama wraps around the player; a smiling golden sun and the exact word **MIRA** appear on the front face. The shared JSON uses `"mode": "cdn"` and public `raw.githubusercontent.com` image URLs. You only need the JSON profile; Fleasion fetches the six 512-pixel PNGs from GitHub.
+
+**[Download the ready-to-use JSON profile](https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/main/bundle/Crossroads-Mira-Sky.json)** · [View the JSON](bundle/Crossroads-Mira-Sky.json)
 
 ## Live test
 
-On 24 September 2026, Fleasion v2.4.0 captured the six `null_plainsky512_*.jpg` requests below during a fresh Crossroads launch. The prior profile used IDs from an older third-party [Crossroads sky snapshot](https://github.com/Dekkonot/crossroads-rojo/blob/fb6e6bbbbbeff1d32458fd617ec409929d301d94/src/Lighting/Sky.model.json); those IDs were not requested in this session. The updated ID profile was tested in game with a checkerboard calibration sky before creating this artwork.
+On 24 September 2026, Fleasion v2.4.0 captured the six `null_plainsky512_*.jpg` requests below during a fresh Crossroads launch. After clearing Roblox's cache, Fleasion served all six MIRA PNGs and the gold smiley appeared in Crossroads. That in-game test used the local-file profile. All six public CDN URLs were then downloaded without authentication: each returned HTTP 200, PNG content, and the exact SHA-256 of its bundled texture. The CDN profile has not yet had a separate in-game test.
 
 | Face | Fleasion asset ID | Bundled texture |
 |---|---:|---|
@@ -21,24 +23,31 @@ The profile matches asset IDs, so it may also recolor the default sky in other R
 
 ## Install
 
-1. Install Python 3.10+ and Fleasion from its [official releases](https://github.com/fleasion/Fleasion/releases). Run Fleasion once, then close Fleasion and Roblox Player.
-2. From this repository, verify and install the bundle:
+1. Install Fleasion from its [official releases](https://github.com/fleasion/Fleasion/releases) and run it once.
+2. Click **Open Configs** in Fleasion to find its configuration folder, then close Fleasion and Roblox Player.
+3. Save the [raw JSON profile](https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/main/bundle/Crossroads-Mira-Sky.json) there as **Crossroads-Mira-Sky.json**. On Windows, this is normally `%LOCALAPPDATA%\FleasionNT\configs`. To update an existing installation, replace its same-named JSON with this CDN version.
+4. Start Fleasion and enable **Crossroads-Mira-Sky** in its Dashboard. Disable any older skybox profile that targets the same six IDs. Clear Roblox's cache in Fleasion, then launch Crossroads through its configured Roblox Player.
+5. Look toward the front sky face for the smiley and **MIRA**, then look around to check the other faces. The lettering sits below the smiley and may be hidden by map walls from some viewpoints.
 
-   ```powershell
-   python skybox.py verify
-   python -m unittest discover -s tests -v
-   python skybox.py install
-   ```
+No image folder, Python installation, or local image paths are required for this setup. The six image URLs are pinned to the artwork commit so everyone receives the same textures.
 
-3. Start Fleasion and enable **Crossroads-Mira-Sky** in its Dashboard. Disable any older skybox profile that targets the same six IDs. In Fleasion, clear the Roblox cache.
-4. Launch Crossroads through the Fleasion-configured Roblox Player. Look toward the front sky face for the smiley and **MIRA**, then look around to check the other faces.
-5. Confirm the installed files and enabled profile:
+## Optional script setup and verification
 
-   ```powershell
-   python skybox.py installed
-   ```
+With Python 3.10+, a full repository checkout can also install the profile and texture copies for byte verification. Close Fleasion and Roblox Player first:
 
-The installer writes only its JSON profile and six PNGs into Fleasion's `configs` folder. It refuses to overwrite an existing profile. Fleasion configures the proxy and Player trust bundle separately; this project does not change them. On macOS or Linux, use `python3` and pass `--home` if Fleasion stores data outside the default location.
+```powershell
+python skybox.py verify
+python -m unittest discover -s tests -v
+python skybox.py install
+```
+
+Enable the profile and clear the cache as described above. For a full bundle installed by the script, confirm the files and enabled profile:
+
+```powershell
+python skybox.py installed
+```
+
+The installer writes its CDN JSON profile and six verification PNGs into Fleasion's `configs` folder. It refuses to overwrite an existing profile. Verification and removal also recognize the original local-file installation. Fleasion configures the proxy and Player trust bundle separately; this project does not change them. On macOS or Linux, use `python3` and pass `--home` if Fleasion stores data outside the default location.
 
 If the previous **Crossroads-Diagnostic-Sky** profile is still enabled, turn it off in Fleasion before installing this one. The new name lets both profiles coexist without overwriting personal configuration.
 
@@ -65,11 +74,11 @@ python skybox.py build
 python skybox.py verify
 ```
 
-If you regenerate any face, update its fixed SHA-256 in `skybox.py` after reviewing the result. Consumers need only the pre-rendered `bundle/` files and the standard library. The original Roblox sky images are not included.
+If you regenerate any face, update its fixed SHA-256 in `skybox.py` after reviewing the result. Commit the new artwork, update `ARTWORK_REVISION` to that commit, and rebuild the JSON before sharing it. The original Roblox sky images are not included.
 
 ## Remove
 
-Disable **Crossroads-Mira-Sky** in Fleasion, close Fleasion and Roblox Player, then run:
+For a JSON-only installation, disable **Crossroads-Mira-Sky** in Fleasion, close Fleasion and Roblox Player, and remove that JSON from the configs folder. For a full script installation, disable the profile, close both apps, then run:
 
 ```powershell
 python skybox.py uninstall

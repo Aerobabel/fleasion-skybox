@@ -5,54 +5,54 @@
       "replace_ids": [
         12221870
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Bk.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Bk.png"
     },
     {
       "name": "Crossroads SkyboxDn",
       "replace_ids": [
         12221876
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Dn.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Dn.png"
     },
     {
       "name": "Crossroads SkyboxLf",
       "replace_ids": [
         12221895
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Lf.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Lf.png"
     },
     {
       "name": "Crossroads SkyboxRt",
       "replace_ids": [
         12221908
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Rt.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Rt.png"
     },
     {
       "name": "Crossroads SkyboxFt",
       "replace_ids": [
         12221889
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Ft.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Ft.png"
     },
     {
       "name": "Crossroads SkyboxUp",
       "replace_ids": [
         12221917
       ],
-      "mode": "local",
-      "local_path": "/Crossroads-Mira-Sky/Up.png",
-      "enabled": true
+      "mode": "cdn",
+      "enabled": true,
+      "cdn_url": "https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/ade9b7cebea074bf6e68fa8cfe3417eb556ef621/bundle/Crossroads-Mira-Sky/Up.png"
     }
   ]
 }

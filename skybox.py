@@ -11,6 +11,9 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parent
 NAME = 'Crossroads-Mira-Sky'
+ARTWORK_REVISION = 'ade9b7cebea074bf6e68fa8cfe3417eb556ef621'
+CDN_BASE = (f'https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/'
+            f'{ARTWORK_REVISION}/bundle/{NAME}')
 IDS = {'Bk': 12221870, 'Dn': 12221876, 'Lf': 12221895,
        'Rt': 12221908, 'Ft': 12221889, 'Up': 12221917}
 TEXTURE_SHA256 = {
@@ -32,10 +35,14 @@ def texture(face):
         raise ValueError(f'Bundled sky texture was modified: {face}.png')
     return data
 
-def profile():
+def profile(mode='cdn'):
+    if mode not in ('cdn', 'local'):
+        raise ValueError(f'Unknown profile mode: {mode}')
     return {'replacement_rules': [
         {'name': 'Crossroads Skybox' + face, 'replace_ids': [asset],
-         'mode': 'local', 'local_path': f'/{NAME}/{face}.png', 'enabled': True}
+         'mode': mode, 'enabled': True,
+         **({'cdn_url': f'{CDN_BASE}/{face}.png'} if mode == 'cdn'
+            else {'local_path': f'/{NAME}/{face}.png'})}
         for face, asset in IDS.items()]}
 
 def files():
@@ -56,7 +63,7 @@ def build(destination):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
 
-def verify(directory):
+def verify(directory, allow_legacy_local=False):
     for relative, expected in files().items():
         path = directory / relative
         if not path.is_file():
@@ -66,6 +73,11 @@ def verify(directory):
         # The PNGs still require an exact byte match.
         if relative.endswith('.json'):
             actual = actual.replace(b'\r\n', b'\n')
+            if allow_legacy_local:
+                # Keep verification/removal working for the already-tested local install.
+                legacy = profile('local')
+                if json.loads(actual) == legacy:
+                    continue
         if digest(actual) != digest(expected):
             raise ValueError(f'Missing or modified file: {relative}')
     return {f: digest(texture(f)) for f in IDS}
@@ -83,7 +95,7 @@ def install(home):
 
 def uninstall(home):
     destination = home / 'configs'
-    verify(destination)
+    verify(destination, allow_legacy_local=True)
     owned = {destination / name for name in files()}
     if set((destination / NAME).rglob('*')) != {p for p in owned if p.suffix == '.png'}:
         raise ValueError('Asset folder contains additional files; refusing to remove it.')
@@ -92,7 +104,7 @@ def uninstall(home):
     (destination / NAME).rmdir()
 
 def check_installed(home):
-    hashes = verify(home / 'configs')
+    hashes = verify(home / 'configs', allow_legacy_local=True)
     settings = json.loads((home / 'settings.json').read_text(encoding='utf-8-sig'))
     if NAME not in settings.get('enabled_configs', []):
         raise ValueError('Files are intact, but profile is not enabled in Fleasion Dashboard.')
