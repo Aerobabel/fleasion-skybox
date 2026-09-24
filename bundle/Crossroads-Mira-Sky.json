@@ -3,55 +3,55 @@
     {
       "name": "Crossroads SkyboxBk",
       "replace_ids": [
-        1013852
+        12221870
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Bk.png",
+      "local_path": "/Crossroads-Mira-Sky/Bk.png",
       "enabled": true
     },
     {
       "name": "Crossroads SkyboxDn",
       "replace_ids": [
-        1013853
+        12221876
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Dn.png",
+      "local_path": "/Crossroads-Mira-Sky/Dn.png",
       "enabled": true
     },
     {
       "name": "Crossroads SkyboxLf",
       "replace_ids": [
-        1013851
+        12221895
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Lf.png",
+      "local_path": "/Crossroads-Mira-Sky/Lf.png",
       "enabled": true
     },
     {
       "name": "Crossroads SkyboxRt",
       "replace_ids": [
-        1013849
+        12221908
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Rt.png",
+      "local_path": "/Crossroads-Mira-Sky/Rt.png",
       "enabled": true
     },
     {
       "name": "Crossroads SkyboxFt",
       "replace_ids": [
-        1013850
+        12221889
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Ft.png",
+      "local_path": "/Crossroads-Mira-Sky/Ft.png",
       "enabled": true
     },
     {
       "name": "Crossroads SkyboxUp",
       "replace_ids": [
-        1013854
+        12221917
       ],
       "mode": "local",
-      "local_path": "/Crossroads-Diagnostic-Sky/Up.png",
+      "local_path": "/Crossroads-Mira-Sky/Up.png",
       "enabled": true
     }
   ]

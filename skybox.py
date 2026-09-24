@@ -1,42 +1,36 @@
-"""Portable Crossroads skybox profile and byte-level verification."""
+"""Portable Crossroads MIRA skybox profile and byte-level verification."""
 import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
 import ssl
-import struct
 import sys
 import urllib.parse
 import urllib.request
-import zlib
 
 ROOT = Path(__file__).resolve().parent
-NAME = 'Crossroads-Diagnostic-Sky'
-IDS = {'Bk': 1013852, 'Dn': 1013853, 'Lf': 1013851,
-       'Rt': 1013849, 'Ft': 1013850, 'Up': 1013854}
-COLORS = {'Bk': (235, 60, 180), 'Dn': (180, 80, 240),
-          'Lf': (40, 210, 210), 'Rt': (240, 150, 35),
-          'Ft': (80, 210, 80), 'Up': (60, 120, 240)}
+NAME = 'Crossroads-Mira-Sky'
+IDS = {'Bk': 12221870, 'Dn': 12221876, 'Lf': 12221895,
+       'Rt': 12221908, 'Ft': 12221889, 'Up': 12221917}
+TEXTURE_SHA256 = {
+    'Bk': '6d12a2670708c28007e7055b9ae3d9cc8cbbc07a14c9154526fc30c14463eab8',
+    'Dn': '5d0f464f5734bc7c7c49feb1b3c4929c0cabffd314158a6d99a3f00f4c3aa721',
+    'Lf': 'fe6227a2ce1316e5d7c21061293c045e947cfed15ebca0d6099de417aaf8b0d5',
+    'Rt': 'b5962c2756521f26e675f87ca4fdfca22611bfeacc072ceb63b7550765eb4b56',
+    'Ft': '2a2e7e0a759750616bde8dc22db927fe8faf7088dc35d18ce5dbdf5de0506587',
+    'Up': '232368f8f0f53d9813aea5ed872f34ba98b5d7405f1c9376b1b44297b18a4f5b',
+}
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 def texture(face):
-    """Deterministic 256px RGB calibration grid; no external image dependency."""
-    def chunk(kind, data):
-        return (struct.pack('>I', len(data)) + kind + data
-                + struct.pack('>I', zlib.crc32(kind + data) & 0xffffffff))
-    rows = bytearray()
-    color = COLORS[face]
-    for y in range(256):
-        rows.append(0)
-        for x in range(256):
-            factor = 1 if ((x // 32 + y // 32) % 2) else .55
-            rows.extend(int(c * factor) for c in color)
-    return (b'\x89PNG\r\n\x1a\n'
-            + chunk(b'IHDR', struct.pack('>IIBBBBB', 256, 256, 8, 2, 0, 0, 0))
-            + chunk(b'IDAT', zlib.compress(rows, 9)) + chunk(b'IEND', b''))
+    """Read an authored face and verify it against the committed digest."""
+    data = (ROOT / 'bundle' / NAME / f'{face}.png').read_bytes()
+    if digest(data) != TEXTURE_SHA256[face]:
+        raise ValueError(f'Bundled sky texture was modified: {face}.png')
+    return data
 
 def profile():
     return {'replacement_rules': [
@@ -65,7 +59,14 @@ def build(destination):
 def verify(directory):
     for relative, expected in files().items():
         path = directory / relative
-        if not path.is_file() or digest(path.read_bytes()) != digest(expected):
+        if not path.is_file():
+            raise ValueError(f'Missing or modified file: {relative}')
+        actual = path.read_bytes()
+        # Git's core.autocrlf converts the checked-out profile on Windows.
+        # The PNGs still require an exact byte match.
+        if relative.endswith('.json'):
+            actual = actual.replace(b'\r\n', b'\n')
+        if digest(actual) != digest(expected):
             raise ValueError(f'Missing or modified file: {relative}')
     return {f: digest(texture(f)) for f in IDS}
 

@@ -1,122 +1,78 @@
-# Crossroads: замена скайбокса через Fleasion
+# MIRA Twilight Skybox for Crossroads
 
-Переносимый профиль Fleasion, шесть диагностических PNG-текстур, установка и проверка на Python без дополнительных библиотек.
+![Front skybox face: a golden smiley sun above MIRA in a twilight sky](bundle/Crossroads-Mira-Sky/Ft.png)
 
-**Статус:** файлы и автоматические тесты проверены. Проверка работающего прокси и визуальная проверка в Roblox пока не выполнены. Исходные ID подтверждены публичным снимком Crossroads; совпадение с текущей опубликованной версией нужно проверить в игре. Этот репозиторий пока не является доказательством завершённого игрового теста.
+A six-face skybox for [Roblox Crossroads](https://www.roblox.com/games/1818/Crossroads), installed locally with [Fleasion](https://github.com/fleasion/Fleasion). A twilight cloud panorama wraps around the player; a smiling golden sun and the exact word **MIRA** appear on the front face. The six 512-pixel PNGs are included. Python's standard library is enough to install and verify them.
 
-## Игра и исходные ID
+## Live test
 
-[Crossroads от Roblox, Place ID 1818](https://www.roblox.com/games/1818/Crossroads).
+On 24 September 2026, Fleasion v2.4.0 captured the six `null_plainsky512_*.jpg` requests below during a fresh Crossroads launch. The prior profile used IDs from an older third-party [Crossroads sky snapshot](https://github.com/Dekkonot/crossroads-rojo/blob/fb6e6bbbbbeff1d32458fd617ec409929d301d94/src/Lighting/Sky.model.json); those IDs were not requested in this session. The updated ID profile was tested in game with a checkerboard calibration sky before creating this artwork.
 
-ID взяты из [Sky.model.json](https://github.com/Dekkonot/crossroads-rojo/blob/fb6e6bbbbbeff1d32458fd617ec409929d301d94/src/Lighting/Sky.model.json), а не подобраны произвольно. Это сторонний публичный снимок игры, не выгрузка текущего игрового сеанса. В исходнике указана версия ассетов `version=1`; Fleasion сопоставляет правила по ID.
+| Face | Fleasion asset ID | Bundled texture |
+|---|---:|---|
+| Back | 12221870 | `Bk.png` |
+| Down | 12221876 | `Dn.png` |
+| Left | 12221895 | `Lf.png` |
+| Right | 12221908 | `Rt.png` |
+| Front | 12221889 | `Ft.png` |
+| Up | 12221917 | `Up.png` |
 
-| Свойство | Исходный ID | Локальная замена | Цвет |
-|---|---:|---|---|
-| SkyboxBk | 1013852 | Bk.png | Розовый |
-| SkyboxDn | 1013853 | Dn.png | Фиолетовый |
-| SkyboxLf | 1013851 | Lf.png | Бирюзовый |
-| SkyboxRt | 1013849 | Rt.png | Оранжевый |
-| SkyboxFt | 1013850 | Ft.png | Зелёный |
-| SkyboxUp | 1013854 | Up.png | Синий |
+The profile matches asset IDs, so it may also recolor the default sky in other Roblox experiences while enabled. Disable the profile and clear Roblox's cache to restore the usual sky.
 
-Все текстуры содержат контрастную клетчатую сетку, чтобы замену было легко отличить от обычного неба. Это диагностический набор, не художественный панорамный скайбокс. Правила действуют на эти ID во всех играх, пока профиль включён.
+## Install
 
-## Быстрый запуск на Windows
+1. Install Python 3.10+ and Fleasion from its [official releases](https://github.com/fleasion/Fleasion/releases). Run Fleasion once, then close Fleasion and Roblox Player.
+2. From this repository, verify and install the bundle:
 
-1. Установить Python 3.10+ и [Fleasion из официальных релизов](https://github.com/fleasion/Fleasion/releases).
-2. Запустить Fleasion один раз, затем закрыть Fleasion и Roblox.
-3. Открыть терминал в папке репозитория:
+   ```powershell
+   python skybox.py verify
+   python -m unittest discover -s tests -v
+   python skybox.py install
+   ```
 
-```powershell
-py skybox.py verify
-py -m unittest discover -s tests -v
-py skybox.py install
-```
+3. Start Fleasion and enable **Crossroads-Mira-Sky** in its Dashboard. Disable any older skybox profile that targets the same six IDs. In Fleasion, clear the Roblox cache.
+4. Launch Crossroads through the Fleasion-configured Roblox Player. Look toward the front sky face for the smiley and **MIRA**, then look around to check the other faces.
+5. Confirm the installed files and enabled profile:
 
-4. Запустить Fleasion. В Dashboard включить профиль **Crossroads-Diagnostic-Sky**. Для чистого теста отключить другие профили, меняющие те же ассеты.
-5. Очистить кэш Roblox средствами Fleasion, запустить Crossroads через настроенный Fleasion Roblox Player и посмотреть во все стороны.
-6. Проверить установку:
+   ```powershell
+   python skybox.py installed
+   ```
 
-```powershell
-py skybox.py installed
-```
+The installer writes only its JSON profile and six PNGs into Fleasion's `configs` folder. It refuses to overwrite an existing profile. Fleasion configures the proxy and Player trust bundle separately; this project does not change them. On macOS or Linux, use `python3` and pass `--home` if Fleasion stores data outside the default location.
 
-Команда установки не меняет `settings.json`, сертификаты, hosts, FastFlags или другие профили. Существующие файлы не перезаписываются. Активация выполняется в интерфейсе Fleasion. Сам Fleasion настраивает свой прокси; данный проект не повторяет эту настройку.
+If the previous **Crossroads-Diagnostic-Sky** profile is still enabled, turn it off in Fleasion before installing this one. The new name lets both profiles coexist without overwriting personal configuration.
 
-На macOS/Linux использовать `python3` вместо `py`. Linux-режим самого Fleasion рассчитан на Sober. Для нестандартного каталога:
+## Verify the live result
 
-```powershell
-py skybox.py install --home "D:\FleasionData"
-```
+Enable Fleasion's Cache Scraper before launching Crossroads. After clearing the cache and joining, search the scraper for `12221`: all six IDs above should appear. The visible sky should be twilight clouds rather than the default blue clouds. The front face should show an upright smiley and the exact word **MIRA**.
 
-Каталог `bundle` можно перенести вручную: его содержимое кладётся в папку `configs` Fleasion. JSON должен лежать в корне `configs`, а PNG внутри `configs/Crossroads-Diagnostic-Sky/`.
-
-## Проверка работающего прокси
-
-Локальная проверка файла не доказывает работу замены в Roblox. Для отдельной сетевой проверки предусмотрена команда `probe`: она отправляет запрос каждого исходного ID через локальный прокси Fleasion, загружает ответ CDN и сравнивает SHA-256 с соответствующим PNG.
-
-Нужны запущенный Fleasion, включённый профиль, текущий порт его Env Proxy и путь к **публичному CA-сертификату** Fleasion в формате PEM. Используйте путь из своей установки Fleasion; приватный ключ не нужен. TLS-проверка остаётся включённой.
+`skybox.py probe` is an optional direct byte test through Fleasion's local proxy. It needs the proxy port and Fleasion's **public** CA certificate:
 
 ```powershell
-py skybox.py probe --ca "C:\path\to\fleasion-ca-certificate.pem" --port 58443
+python skybox.py probe --ca "C:\path\to\ca.crt" --port 58443
 ```
 
-`58443` — обычный порт; Fleasion может выбрать другой. При ошибке доступа к Roblox API, неизвестном формате ответа, недоступном прокси или несовпадении байтов команда завершится с кодом 1. Сетевой тест здесь не запускался, поэтому совместимость этого запроса с текущим Roblox API ещё не подтверждена. Он не использует cookies или токены Roblox.
+The no-cookie probe returned HTTP 404 during the September 2026 test, even though the in-game checkerboard and scraper confirmed the replacement. A failed probe alone does not establish failure in Player. Do not share Roblox cookies, auth tickets, private CA keys, or full proxy logs when reporting a test.
 
-Успешный `probe` подтверждает получение заменённых байтов через прокси. Он сам по себе не доказывает, что текущая версия Crossroads запросила эти ID или отобразила изображения.
+## Artwork and regeneration
 
-## Как завершить приёмочный тест
-
-1. Отключить профиль, очистить кэш и открыть Crossroads. Сохранить скриншот обычного неба.
-2. Включить Cache Scraper Fleasion и проверить, что игра действительно запрашивает указанные ID. Если ID изменились, найти фактические текстуры в Cache Viewer и обновить словарь `IDS` в `skybox.py`, затем выполнить `build` и повторить установку.
-3. Включить профиль, очистить кэш и повторно открыть ту же игру. Сохранить скриншот клетчатого неба.
-4. Выполнить `installed` и `probe`; сохранить вывод. Указать дату, версию Fleasion и ссылку на игру.
-5. Добавить скриншоты и результат в репозиторий. Не публиковать полные логи, cookies, сертификаты или ключи.
-
-Если игровая страница недоступна для аккаунта либо игра больше не использует эти ID, этот пример требует смены цели; зелёный CI не считается успешным игровым тестом.
-
-## Удаление
-
-Отключить профиль в Dashboard, закрыть Fleasion и Roblox, выполнить:
+The source panorama and transparent MIRA emblem are in [`art/`](art/). They were generated with OpenAI's built-in image generation tool; the exact prompts are recorded in [`art/README.md`](art/README.md). The optional [`art/render_skybox.py`](art/render_skybox.py) projects the panorama into six faces and composites the emblem on the front face. It requires Pillow and NumPy:
 
 ```powershell
-py skybox.py uninstall
-```
-
-Удаляются только созданные этим проектом JSON и PNG. При изменённых или дополнительных файлах удаление блокируется, чтобы сохранить пользовательские изменения. После удаления очистить кэш средствами Fleasion, иначе Roblox может показать уже закэшированные замены.
-
-## Что проверяется автоматически
-
-- Совпадение профиля и всех PNG с воспроизводимым набором.
-- Сохранение настроек и чужих профилей при установке и удалении.
-- Отказ от перезаписи существующего профиля.
-- Обнаружение повреждённых текстур.
-- Защита дополнительных пользовательских файлов при удалении.
-- Проверка активации профиля.
-- Логика сетевого проверяющего кода на имитированных ответах, отдельно от реального прокси.
-
-GitHub Actions выполняет офлайн-проверку пакета и unit-тесты. Он не запускает Roblox и не выдаёт результат игрового теста.
-
-## Воспроизводимость и формат
-
-```sh
+python -m pip install pillow numpy
+python art/render_skybox.py
 python skybox.py build
 python skybox.py verify
-python -m unittest discover -s tests -v
 ```
 
-Формат `replacement_rules`, `replace_ids`, `mode: local`, `local_path`, `enabled` и переносимые пути `/Folder/file` проверены по [Fleasion config/manager.py](https://github.com/fleasion/Fleasion/blob/7f4c6c1cc326a3801d91091da353d535d5b2c974/src/fleasion/config/manager.py). Код Fleasion не включён в этот проект. Числовые ID получены из указанного снимка Crossroads; исходные текстуры Roblox не распространяются.
+If you regenerate any face, update its fixed SHA-256 in `skybox.py` after reviewing the result. Consumers need only the pre-rendered `bundle/` files and the standard library. The original Roblox sky images are not included.
 
-## Публикация
+## Remove
 
-Создать пустой публичный репозиторий `fleasion-skybox` в своём GitHub, затем из этой папки:
+Disable **Crossroads-Mira-Sky** in Fleasion, close Fleasion and Roblox Player, then run:
 
-```sh
-git init -b main
-git add .
-git commit -m "Add Crossroads skybox replacement and verification"
-git remote add origin https://github.com/Aerobabel/fleasion-skybox.git
-git push -u origin main
+```powershell
+python skybox.py uninstall
 ```
 
-Если Git ещё не настроен, указать в своей конфигурации Git собственные имя и email. Репозиторий не содержит готовой истории коммитов или подставленных данных автора.
+The command removes only files that still match this bundle and refuses to remove a folder containing extra files. Clear Roblox's cache in Fleasion afterward.

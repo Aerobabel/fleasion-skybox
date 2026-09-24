@@ -12,6 +12,19 @@ class SkyboxTests(unittest.TestCase):
         self.settings = {'enabled_configs': ['Existing'], 'theme': 'dark'}
         (self.home / 'settings.json').write_text(json.dumps(self.settings))
 
+    def test_checked_out_bundle_verifies(self):
+        self.assertEqual(len(skybox.verify(skybox.ROOT / 'bundle')), 6)
+
+    def test_verify_accepts_crlf_profile_but_rejects_changed_rule(self):
+        folder = self.home / 'configs'
+        skybox.build(folder)
+        profile = folder / f'{skybox.NAME}.json'
+        profile.write_bytes(profile.read_bytes().replace(b'\n', b'\r\n'))
+        self.assertEqual(len(skybox.verify(folder)), 6)
+        profile.write_bytes(profile.read_bytes().replace(b'12221870', b'12221871'))
+        with self.assertRaises(ValueError):
+            skybox.verify(folder)
+
     def test_install_preserves_settings_and_unrelated_files(self):
         folder = self.home / 'configs'
         folder.mkdir()
