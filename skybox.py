@@ -11,7 +11,7 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parent
 NAME = 'Crossroads-Mira-Sky'
-ARTWORK_REVISION = 'ade9b7cebea074bf6e68fa8cfe3417eb556ef621'
+ARTWORK_REVISION = '0c4fd2e276e37f12ba85e89f628d9a4c7b8910fb'
 CDN_BASE = (f'https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/'
             f'{ARTWORK_REVISION}/bundle/{NAME}')
 IDS = {'Bk': 12221870, 'Dn': 12221876, 'Lf': 12221895,
