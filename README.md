@@ -6,6 +6,16 @@ A six-face skybox for [Roblox Crossroads](https://www.roblox.com/games/1818/Cros
 
 **[Download the ready-to-use JSON profile](https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/main/bundle/Crossroads-Mira-Sky.json)** · [View the JSON](bundle/Crossroads-Mira-Sky.json)
 
+## Seam correction
+
+The corrected export uses Roblox's face layout: the lateral faces and cap rotations now line up. All 12 adjoining edges match pixel-for-pixel, including the eight corners. The renderer also closes the panorama's longitude wrap and smooths its poles. The MIRA artwork and Crossroads asset IDs are preserved.
+
+The supplied [Bimbocore Glam v1.2 example](https://github.com/BuyKevin/rivals-bimbocore-glam-pack/blob/main/CHANGELOG_v1.2.md) and [Roblox's skybox guide](https://devforum.roblox.com/t/custom-skyboxes-101/2849003) document the face-convention requirements. [Technical notes](art/README.md) explain the checks; [the edge report](art/seam-report.json) records the result.
+
+![Rendered comparison in Roblox face orientation, before on the left and corrected on the right](art/seam-comparison.png)
+
+This comparison is a rendered cubemap preview, not an in-game screenshot. After updating the JSON, clear Roblox's cache in Fleasion and rejoin to load the corrected image URLs.
+
 ## Live test
 
 On 24 September 2026, Fleasion v2.4.0 captured the six `null_plainsky512_*.jpg` requests below during a fresh Crossroads launch. After clearing Roblox's cache, Fleasion served all six MIRA PNGs and the gold smiley appeared in Crossroads. That in-game test used the local-file profile. All six public CDN URLs were then downloaded without authentication: each returned HTTP 200, PNG content, and the exact SHA-256 of its bundled texture. The CDN profile has not yet had a separate in-game test.
@@ -47,7 +57,7 @@ Enable the profile and clear the cache as described above. For a full bundle ins
 python skybox.py installed
 ```
 
-The installer writes its CDN JSON profile and six verification PNGs into Fleasion's `configs` folder. It refuses to overwrite an existing profile. Verification and removal also recognize the original local-file installation. Fleasion configures the proxy and Player trust bundle separately; this project does not change them. On macOS or Linux, use `python3` and pass `--home` if Fleasion stores data outside the default location.
+The installer writes its CDN JSON profile and six verification PNGs into Fleasion's `configs` folder. It refuses to overwrite an existing profile. Verification and removal also recognize the local-file profile format when the images match the current bundle. Fleasion configures the proxy and Player trust bundle separately; this project does not change them. On macOS or Linux, use `python3` and pass `--home` if Fleasion stores data outside the default location.
 
 If the previous **Crossroads-Diagnostic-Sky** profile is still enabled, turn it off in Fleasion before installing this one. The new name lets both profiles coexist without overwriting personal configuration.
 
@@ -70,6 +80,7 @@ The source panorama and transparent MIRA emblem are in [`art/`](art/). They were
 ```powershell
 python -m pip install pillow numpy
 python art/render_skybox.py
+python art/check_seams.py
 python skybox.py build
 python skybox.py verify
 ```

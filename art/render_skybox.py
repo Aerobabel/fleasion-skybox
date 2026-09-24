@@ -16,37 +16,54 @@ FACES = ('Bk', 'Dn', 'Lf', 'Rt', 'Ft', 'Up')
 
 
 def wrap_panorama(image):
-    """Blend the generated panorama's two ends so longitude wraps cleanly."""
+    """Make the artwork continuous at the longitude wrap and both poles."""
     pixels = np.asarray(image.convert('RGB'), dtype=np.float32).copy()
-    width = pixels.shape[1]
+    height, width = pixels.shape[:2]
     band = min(64, width // 16)
     for offset in range(band):
-        weight = (band - offset) / band
+        fraction = 1 - offset / band
+        weight = fraction * fraction * (3 - 2 * fraction)
         left = pixels[:, offset].copy()
         right = pixels[:, width - 1 - offset].copy()
         shared = (left + right) / 2
         pixels[:, offset] = left * (1 - weight) + shared * weight
         pixels[:, width - 1 - offset] = right * (1 - weight) + shared * weight
-    return np.clip(pixels, 0, 255).astype(np.uint8)
+    # Every longitude meets at each pole; keep it one color instead of a pinwheel.
+    pole_band = max(2, height // 16)
+    for row, step in ((0, 1), (height - 1, -1)):
+        pole = pixels[row].mean(axis=0)
+        for offset in range(pole_band):
+            fraction = 1 - offset / pole_band
+            weight = fraction * fraction * (3 - 2 * fraction)
+            index = row + step * offset
+            pixels[index] = pixels[index] * (1 - weight) + pole * weight
+    return np.rint(np.clip(pixels, 0, 255)).astype(np.uint8)
 
 
 def directions(face, size):
+    """Panorama-space rays in Roblox's face orientation, viewed from inside.
+
+    Roblox's horizontal image order is Ft, Lf, Bk, Rt. The caps have a
+    quarter-turn relative to a generic front/right/back/left cubemap.
+    See art/README.md for the Roblox guide and GitHub reference.
+    """
     yy, xx = np.mgrid[:size, :size]
-    u = 2 * (xx + 0.5) / size - 1
-    v = 2 * (yy + 0.5) / size - 1
+    # Shared borders sample the exact same rays, including all eight corners.
+    u = 2 * xx / (size - 1) - 1
+    v = 2 * yy / (size - 1) - 1
     one = np.ones_like(u)
     if face == 'Ft':
         return u, -v, one
     if face == 'Bk':
         return -u, -v, -one
-    if face == 'Rt':
-        return one, -v, -u
     if face == 'Lf':
+        return one, -v, -u
+    if face == 'Rt':
         return -one, -v, u
     if face == 'Up':
-        return u, one, v
+        return -v, one, u
     if face == 'Dn':
-        return u, -one, -v
+        return v, -one, u
     raise ValueError(face)
 
 
@@ -69,7 +86,7 @@ def render_face(panorama, face, size):
     top = panorama[y0, x0] * (1 - fx) + panorama[y0, x1] * fx
     bottom = panorama[y1, x0] * (1 - fx) + panorama[y1, x1] * fx
     pixels = top * (1 - fy) + bottom * fy
-    return Image.fromarray(np.clip(pixels, 0, 255).astype(np.uint8), 'RGB')
+    return Image.fromarray(np.rint(np.clip(pixels, 0, 255)).astype(np.uint8))
 
 
 def add_emblem(front, source):

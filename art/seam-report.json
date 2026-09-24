@@ -1,0 +1,92 @@
+{
+  "status": "PASS",
+  "edge_pairs": 12,
+  "face_size": 512,
+  "max_channel_difference": 0,
+  "pairs": [
+    {
+      "join": "Bk.top / Up.left",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Bk.bottom / Dn.left",
+      "reverse_neighbor": true,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Bk.left / Lf.right",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Bk.right / Rt.left",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Ft.top / Up.right",
+      "reverse_neighbor": true,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Ft.bottom / Dn.right",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Ft.left / Rt.right",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Ft.right / Lf.left",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Lf.top / Up.top",
+      "reverse_neighbor": true,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Lf.bottom / Dn.bottom",
+      "reverse_neighbor": true,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Rt.top / Up.bottom",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    },
+    {
+      "join": "Rt.bottom / Dn.top",
+      "reverse_neighbor": false,
+      "max_channel_difference": 0,
+      "mean_channel_difference": 0.0,
+      "mismatched_pixels": 0
+    }
+  ]
+}

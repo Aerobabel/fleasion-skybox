@@ -17,12 +17,12 @@ CDN_BASE = (f'https://raw.githubusercontent.com/Aerobabel/fleasion-skybox/'
 IDS = {'Bk': 12221870, 'Dn': 12221876, 'Lf': 12221895,
        'Rt': 12221908, 'Ft': 12221889, 'Up': 12221917}
 TEXTURE_SHA256 = {
-    'Bk': '6d12a2670708c28007e7055b9ae3d9cc8cbbc07a14c9154526fc30c14463eab8',
-    'Dn': '5d0f464f5734bc7c7c49feb1b3c4929c0cabffd314158a6d99a3f00f4c3aa721',
-    'Lf': 'fe6227a2ce1316e5d7c21061293c045e947cfed15ebca0d6099de417aaf8b0d5',
-    'Rt': 'b5962c2756521f26e675f87ca4fdfca22611bfeacc072ceb63b7550765eb4b56',
-    'Ft': '2a2e7e0a759750616bde8dc22db927fe8faf7088dc35d18ce5dbdf5de0506587',
-    'Up': '232368f8f0f53d9813aea5ed872f34ba98b5d7405f1c9376b1b44297b18a4f5b',
+    'Bk': '570f3086a5cd1120fc82ece896bda589e91452459f561b2bb565144d50c529e6',
+    'Dn': '80ace0e89d6efb5ba7bb8aea13bf8fccbc3ff690dba025a8a1e648d660f469a2',
+    'Lf': '8a6b653be2f8c8f557fbbc0ecebce2b5fb69b15b4e20603f802d83ee39928628',
+    'Rt': '42c0c83a3d3fd09df252be1b99960e2aa076312d84b9919bc8b18db25c0dcf59',
+    'Ft': 'c652c553bddb7123bf681af9230e1d5c0a3fd03b890ce2270d34772a075b284a',
+    'Up': '6d55796fb8b3578e5d7faa7f181fcfa4491e1a7e6695f455187424dc0fc840be',
 }
 
 def digest(data):
